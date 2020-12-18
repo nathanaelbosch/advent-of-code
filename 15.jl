@@ -1,3 +1,4 @@
+using BenchmarkTools
 using ProgressMeter
 
 myinput = [1,20,8,12,0,14]
@@ -49,5 +50,5 @@ function memory_game2(input, N)
     return lastspoken
 end
 # BLAZING FAST!
-@btime memory_game2(testinput, N÷100)
+@btime memory_game2(testinput, N)
 part2 = memory_game2(testinput, N)
