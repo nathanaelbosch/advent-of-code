@@ -21,5 +21,6 @@ part1 = memory_game(myinput, 2020)
 # part 2
 N = 30000000
 # @btime memory_game([0,3,6], N÷100)
-memory_game([0,3,6], N)
+# memory_game([0,3,6], N)
 # Should be 175594
+memory_game(myinput, N)
