@@ -1,3 +1,4 @@
 [deps]
 Images = "916415d5-f1e6-5110-898d-aaa5f9f070e0"
 ProgressBars = "49802e3a-d2f1-5c88-81d8-b72133a6f568"
+StatsBase = "2913bbd2-ae8a-5f71-8c99-4fb6c76f3a91"
