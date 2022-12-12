@@ -80,7 +80,7 @@ function astar(start, goal, mat)
     frontier = PriorityQueue()
     frontier[start] = 0
     came_from = Dict{CartesianIndex{2},Union{Nothing,CartesianIndex{2}}}()
-    cost_so_far = Dict{CartesianIndex{2},Int}()
+    cost_so_far = Dict{CartesianIndex{2},Int64}()
     came_from[start] = nothing
     cost_so_far[start] = 0
 
@@ -141,6 +141,7 @@ function plot_path(mat, path)
     title!("Day 12")
     return p
 end
+plot_path(mat, path)
 
 # Part 2: Find the location a that has the shortest path to E
 # For this we will use a breadth-first search
@@ -194,9 +195,9 @@ plot_path(mat, path)
 # visualize the a locations
 p0 = heatmap(mat[end:-1:begin, :], aspect_ratio=:equal, legend=false, ticks=false, xaxis=false)
 plotmat = copy(mat)
-plotmat[_mat.=='a'] .= 200
+plotmat[_mat.=='a'] .= maximum(mat)
 p1 = heatmap(plotmat[end:-1:begin, :], aspect_ratio=:equal, legend=false, title="'a' locations", ticks=false, xaxis=false)
 plotmat = copy(mat)
-plotmat[reachable_as] .= 200
+plotmat[reachable_as] .= maximum(mat)
 p2 = heatmap(plotmat[end:-1:begin, :], aspect_ratio=:equal, legend=false, title="reachable 'a' locations", ticks=false, xaxis=false)
 plot(p0, p1, p2, layout=(3, 1), size=(600, 800))
