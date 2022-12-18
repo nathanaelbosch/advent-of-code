@@ -48,7 +48,7 @@ struct VLine <: Rocks end
 """
 struct Block <: Rocks end
 
-rockchoice = Dict(
+const rock_choice = Dict(
     1 => HLine(),
     2 => Plus(),
     3 => Angle(),
@@ -83,7 +83,7 @@ function add_new_rock!(chamber, r)
     spawn_row = highest_row + 4
     spawn_col = 4
 
-    rock = rockchoice[(r%5)+1]
+    rock = rock_choice[(r%5)+1]
     add_rock!(chamber, rock, spawn_row, spawn_col)
     return chamber
 end
@@ -127,7 +127,7 @@ function rock_fall!(chamber)
         return chamber, true
     else
         chamber[falling_rock] .= ' '
-        (@view chamber[begin:end-1, :])[falling_rock[begin+1:end, :]] .= '@'
+        (@view chamber[begin:end-1, :])[@view falling_rock[begin+1:end, :]] .= '@'
         return chamber, false
     end
 end
@@ -145,7 +145,7 @@ function game_loop(chamber, input; until_rock=2022)
                 try
                     add_new_rock!(chamber, rock_number)
                 catch BoundsError
-                    chamber = resize_chamber(chamber)
+                    resize_chamber!(chamber)
                     add_new_rock!(chamber, rock_number)
                 end
                 if rock_number % 1000 == 0
@@ -165,12 +165,14 @@ end
 """
 The rocks make a new floor, so there os a lot we can just forget now!
 """
-function resize_chamber(chamber)
-    new_chamber = make_chamber()
+function resize_chamber!(chamber)
     max_forgettable_row = [findlast(r -> '#' in r, c) for c in eachcol(chamber)][begin+1:end-1] |> minimum
+    relevant_part = chamber[max_forgettable_row:end, begin+1:end-1]
+
+    chamber[begin+1:end, begin+1:end-1] .= ' '
     height = size(chamber)[1] - max_forgettable_row + 1
-    new_chamber[begin+1:height+1, begin+1:end-1] .= chamber[max_forgettable_row:end, begin+1:end-1]
-    return new_chamber
+    chamber[begin+1:height+1, begin+1:end-1] .= relevant_part
+    return chamber
 end
 
 
